@@ -1,5 +1,6 @@
 # Predictive-Risk-Modeling-for-Financial-Lending
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://predictive-risk-modeling-for-financial-lending.streamlit.app/)
 ## Overview
 
 This project develops a machine learning system to predict the probability of loan default. It transforms raw financial data into a risk-scoring mechanism used to support lending decisions in banking and fintech environments.
