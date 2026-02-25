@@ -34,9 +34,10 @@ with col3:
     credit_worthiness = st.selectbox("Credit Worthiness", ["l1", "l2"])
 
 # 4. PREDICTION LOGIC
+# 4. PREDICTION LOGIC
 if st.button("Generate Risk Report"):
-    # Ensure dataframe matches the features used in your refined_pipeline
-    input_df = pd.DataFrame([{
+    # Create the initial dataframe from user inputs
+    input_data = {
         'loan_amount': loan_amount,
         'property_value': property_value,
         'income': income,
@@ -46,9 +47,24 @@ if st.button("Generate Risk Report"):
         'loan_limit': loan_limit,
         'approv_in_adv': approv_in_adv,
         'Credit_Worthiness': credit_worthiness
-    }])
+    }
+    
+    # 1. Convert to DataFrame
+    input_df = pd.DataFrame([input_data])
 
-    # Get Probability
+    # 2. Get the list of features the model EXPECTS
+    # This reaches into the pipeline to see what the training columns were
+    expected_features = model.feature_names_in_
+
+    # 3. Fill in any missing columns with 0 or 'unknown'
+    for col in expected_features:
+        if col not in input_df.columns:
+            input_df[col] = 0  # Or use a standard default for that column
+
+    # 4. Reorder columns to match the model's training order exactly
+    input_df = input_df[expected_features]
+
+    # Now predict
     probability = model.predict_proba(input_df)[0][1]
     
     # 5. RESULT DISPLAY
